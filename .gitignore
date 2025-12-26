@@ -1,0 +1,131 @@
+###############################################################################
+# ============================== GENERAL ======================================
+###############################################################################
+
+# Compiled objects
+*.o
+*.obj
+*.elf
+*.out
+*.hex
+*.bin
+*.map
+*.a
+*.so
+*.dll
+
+# Logs & temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+###############################################################################
+# ================================ C / EMBEDDED ================================
+###############################################################################
+
+# Build directories
+/build/
+/Debug/
+/Release/
+/output/
+/dist/
+
+# Make / CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Keil uVision
+*.uvopt*
+*.uvprojx
+*.uvgui*
+*.dep
+*.crf
+*.d
+*.lst
+
+# STM32CubeIDE
+.metadata/
+.settings/
+.project
+.cproject
+*.launch
+
+# GCC / ARM toolchain
+*.su
+*.stackdump
+
+###############################################################################
+# ================================ VERILOG / HDL ===============================
+###############################################################################
+
+# Simulation outputs
+*.vcd
+*.fst
+*.wlf
+*.vvp
+*.lxt
+*.lxt2
+*.ghw
+
+# Compiled simulation libraries
+work/
+modelsim.ini
+
+# Icarus Verilog
+iverilog_out/
+
+# Questa / ModelSim
+transcript
+vsim.wlf
+
+# Vivado
+.vivado/
+*.jou
+*.str
+*.xpr
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.srcs/
+
+# Quartus
+db/
+incremental_db/
+*.qws
+*.qpf~
+*.qsf~
+
+###############################################################################
+# ================================ IDE / EDITOR ================================
+###############################################################################
+
+# VS Code
+.vscode/
+
+# CLion
+.idea/
+cmake-build-*/
+
+# Eclipse
+*.classpath
+
+###############################################################################
+# ================================ OS FILES ====================================
+###############################################################################
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~

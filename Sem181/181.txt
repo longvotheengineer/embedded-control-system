@@ -1,0 +1,13 @@
+/******************************************************************************
+ *  @file    main.c
+ *  @author  LvDaengineer
+ *  @brief   STM32F4 - Memory Mapped Peripherals
+ *
+ *  Copyright (c) 2025 LvDaengineer
+ *  All rights reserved.
+ *
+ *  This software is provided "as is", without warranty of any kind.
+ *  Unauthorized copying or distribution is prohibited.
+ *
+ *****************************************************************************/
+

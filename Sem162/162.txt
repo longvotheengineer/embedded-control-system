@@ -1,0 +1,54 @@
+/******************************************************************************
+ *  @file    main.c
+ *  @author  LvDaengineer
+ *  @brief   STM32F4 - Memory Mapped Peripherals
+ *
+ *  Copyright (c) 2025 LvDaengineer
+ *  All rights reserved.
+ *
+ *  This software is provided "as is", without warranty of any kind.
+ *  Unauthorized copying or distribution is prohibited.
+ *
+ *****************************************************************************/
+
+-	PA[3:2]   	UART2 	AF7
+	PA[15]	  	SPI1  	AF5
+	PB[5:3]   	SPI1  	AF5
+	PB[15:12] 	SPI2  	AF5		
+	PC[11:10] 	UART3 	AF7
+	
+
+-	RCC_AHB1ENR 	|= (1<< 0) | (1<< 1) | (1<< 2);
+	RCC_APB1ENR 	|= (1<<14) | (1<<17) | (1<<18);
+	RCC_APB2ENR 	|= (1<<12);
+
+	GPIOA_MODER 	|= (2<< 4) | (2<< 6)						// UART2
+					  |(2<<30);									// SPI1	
+	GPIOB_MODER 	|= (2<< 6) | (2<< 8) | (2<<10)	     		// SPI1
+					  |(2<<24) | (2<<26) | (2<<28) | (2<<30); 	// SPI2
+	GPIOC_MODER 	|= (2<<20) | (2<<22);
+
+	GPIOA_AFRL 		|= (7<< 8) | (7<<12);						// UART2
+	GPIOA_AFRH 		|= (5<<28);									// SPI1
+	GPIOB_AFRL 		|= (5<<12) | (5<<16) | (5<<20);
+	GPIOB_AFRH 		|= (5<<24) | (5<<26) | (5<<28) | (5<<30); 	// SPI2
+	GPIOC_AFRH 		|= (7<<20) | (7<<22);
+
+	GPIOA_OTYPER 	|= (0<< 2) | (0<< 3) | (0<<15);
+	GPIOB_OTYPER 	|= (0<< 3) | (0<< 4) | (0<< 5)
+					  |(0<<12) | (0<<13) | (0<<14) | (0<<15);
+	GPIOC_OTYPER 	|= (0<<10) | (0<<11);
+
+	GPIOA_OSPEEDER 	|= (1<< 4) | (1<< 6)						// UART2
+					  |(2<<30);									// SPI1
+	GPIOB_OSPEEDER 	|= (2<< 6) | (2<< 8) | (2<<10)		 		// SPI1
+					  |(2<<24) | (2<<26) | (2<<28) | (2<<30);  	// SPI2
+	GPIOC_OSPEEDER 	|= (1<<20) | (1<<22);
+
+	GPIOA_PUPDR 	|= (0<< 4) | (1<< 6)						// TX RX
+					  |(1<<30);									// NSS
+	GPIOB_PUPDR 	|= (0<< 6) | (1<< 8) | (0<<10)				// CLK MISO MOSI
+					  |(1<<24) | (0<<26) | (1<<28) | (0<<30);	// NSS CLK MISO MOSI
+	GPIOC_PUPDR 	|= (0<<20) | (1<<22);
+	
+	

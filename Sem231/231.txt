@@ -1,0 +1,47 @@
+/******************************************************************************
+ *  @file    main.c
+ *  @author  LvDaengineer
+ *  @brief   STM32F4 - Memory Mapped Peripherals
+ *
+ *  Copyright (c) 2025 LvDaengineer
+ *  All rights reserved.
+ *
+ *  This software is provided "as is", without warranty of any kind.
+ *  Unauthorized copying or distribution is prohibited.
+ *
+ *****************************************************************************/
+
+#define ADDR_ENC1 	0X60000020
+#define ADDR_ENC2 	0X60000024
+#define SIZE_BUFF	15			
+
+void int_to_ascii(uint32_t enc_val, uint8_t *txbuff)
+{
+	for (int i = 5; i >= 0; i--)
+	{
+		txbuff[i] 	= enc_val % 10 + 0x30;
+		enc_val		= enc_val / 10;
+	}
+}
+
+int main()
+{
+	uint8_t 			txbuff[SIZE_BUFF];								
+	uint32_t 			enc_val;			
+	volatile uint16_t 	*ptr_enc;	
+			
+	ptr_enc		= (uint16_t *)ADDR_ENC1;			
+	enc_val 	= *ptr_enc++;							
+	enc_val		= (*ptr_enc << 16) + enc_val;	
+	int_to_ascii(enc_val, txbuff);				
+	txbuff[6]	= 0x20;								
+	
+	ptr_enc		= (uint16_t *)ADDR_ENC2;		
+	enc_val		= *ptr_enc++;
+	enc_val		= (*ptr_enc << 16) + enc_val;
+	int_to_ascii(enc_val, txbuff + 7);
+	txbuff[13]	= 0x0D;
+	txbuff[14]	= 0x0A;
+	
+	send_data((char *)txbuff, SIZE_BUFF);
+}

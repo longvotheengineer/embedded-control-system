@@ -1,0 +1,54 @@
+/******************************************************************************
+ *  @file    main.c
+ *  @author  LvDaengineer
+ *  @brief   STM32F4 - Memory Mapped Peripherals
+ *
+ *  Copyright (c) 2025 LvDaengineer
+ *  All rights reserved.
+ *
+ *  This software is provided "as is", without warranty of any kind.
+ *  Unauthorized copying or distribution is prohibited.
+ *
+ *****************************************************************************/
+
+#define ADDR_PWM	0x60000000
+#define SIZE_BUFF	36
+
+bool check_condition(uint8_t *rxbuff)
+{
+	uint16_t CRC = 0;
+	uint16_t CRC_L, CRC_H;
+	for (int i = 0; i < 34; i++)
+	{
+		CRC += rxbuff[i];		
+	}
+	
+	CRC_H = CRC >> 8;
+	CRC_L = CRC & 0xFF;
+	
+	if (rxbuff[ 0] 	== 0xAA 	&&
+		rxbuff[ 1] 	== 0x55 	&&
+		rxbuff[34]	== CRC_H	&&
+		rxbuff[35]	== CRC_L	)
+		return true;
+	else
+		return false;		
+}
+
+int main()
+{
+	uint8_t				rxbuff[SIZE_BUFF];
+	volatile uint8_t	*ptr_pwm;
+	
+	receive_data((char *)rxbuff, SIZE_BUFF);
+	
+	if (check_condition(rxbuff))
+	{
+		ptr_pwm = ADDR_PWM;
+		for (int i = 2; i < 34; i++)
+		{
+			*ptr_pwm = rxbuff[i];
+			ptr_pwm ++;
+		}
+	}
+}	

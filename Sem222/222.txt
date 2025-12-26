@@ -1,0 +1,46 @@
+/******************************************************************************
+ *  @file    main.c
+ *  @author  LvDaengineer
+ *  @brief   STM32F4 - Memory Mapped Peripherals
+ *
+ *  Copyright (c) 2025 LvDaengineer
+ *  All rights reserved.
+ *
+ *  This software is provided "as is", without warranty of any kind.
+ *  Unauthorized copying or distribution is prohibited.
+ *
+ *****************************************************************************/
+ 
+ #define ADDR_ENC 	0x60000020
+ #define SIZE_BUFF 	11
+ 
+ void calculateCRC(uint8_t *txbuff)
+ {
+	txbuff[10] = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		txbuff[10] ^= txbuff[i];
+	}
+ }
+ 
+ int main()
+ {
+	uint8_t				txbuff[SIZE_BUFF];
+	uint16_t 			enc_val;
+	volatile uint16_t	*ptr_enc;
+		
+	txbuff[0]	= 0x55;
+	txbuff[1]	= 0xAA;
+	
+	ptr_enc		= (uint16_t *)ADDR_ENC;
+	for (int i = 0; i < 4; i++)
+	{		
+		enc_val			= *ptr_enc++;
+		txbuff[2*i + 2]	= enc_val >> 8;
+		txbuff[2*i + 3]	= enc_val & 0xFF;
+	}
+		
+	calculateCRC(txbuff);
+	
+	send_data((char *)txbuff, SIZE_BUFF);
+ }

@@ -1,0 +1,30 @@
+/******************************************************************************
+ *  @file    main.c
+ *  @author  LvDaengineer
+ *  @brief   STM32F4 - Memory Mapped Peripherals
+ *
+ *  Copyright (c) 2025 LvDaengineer
+ *  All rights reserved.
+ *
+ *  This software is provided "as is", without warranty of any kind.
+ *  Unauthorized copying or distribution is prohibited.
+ *
+ *****************************************************************************/
+ 
+-	PD[1:0] CAN		CAN1_TX   : CAN1_RX		AF9
+	PD[6:5] UART 	USART2_RX : USART2_TX	AF7
+ 	
+-	RCC_AHB1ENR 	|= (1<< 3);
+	RCC_APB1ENR 	|= (1<<17) | (1<<25);
+
+-	GPIOD_MODER 	|= (2<< 0) | (2<< 2)|
+					   (2<<10) | (2<<12);
+	GPIOD_AFRL 		|= (0<< 0) | (0<< 4)|
+					   (7<<20) | (7<<24);
+
+	GPIOD_OTYPER 	|= (0<< 0) | (0<< 1)|
+					   (0<< 5) | (0<< 6);
+	GPIOD_OSPEEDR 	|= (1<< 0) | (1<< 2)|
+					   (1<<10) | (1<<12);
+	GPIOD_PUPDR 	|= (0<< 0) | (0<< 2)|
+					   (0<<10) | (1<<12);

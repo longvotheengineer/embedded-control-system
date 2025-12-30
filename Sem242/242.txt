@@ -1,0 +1,62 @@
+/******************************************************************************
+ *  @file    main.c
+ *  @author  LvDaengineer
+ *  @brief   STM32F4 - Memory Mapped Peripherals
+ *
+ *  Copyright (c) 2025 LvDaengineer
+ *  All rights reserved.
+ *
+ *  This software is provided "as is", without warranty of any kind.
+ *  Unauthorized copying or distribution is prohibited.
+ *
+ *****************************************************************************/
+ /*****************************    PROBLEM 2    ******************************/
+ 
+ module xuatxung(clk, T1, T2, PULSEIN, PULSEOUT);
+	input 	clk, PULSEIN;
+	input	[7:0] T1, T2;
+	output	PULSEOUT;
+	reg		PULSEIN_pre, PULSEOUT;
+	reg		[7:0] T1_cnt, T2_cnt;
+	reg		[1:0] flag;
+	
+	initial begin
+		PULSEIN_pre	= 0;
+		PULSEOUT 	= 0;
+		T1_cnt		= 0;
+		T2_cnt		= 0;
+		flag		= 0;
+	end
+	
+	always @(posedge clk) begin
+		PULSEIN_pre <= PULSEIN;
+		
+		if ({PULSEIN_pre, PULSEIN} == 2'b01) begin
+			flag 		<= 1;
+			T1_cnt		<= 0;
+			T2_cnt		<= 0;
+			// PULSEOUT <= 0;
+		end
+		else if (flag == 1) begin
+			if (T1_cnt != T1 - 1) begin
+				T1_cnt <= T1_cnt + 1;
+			end
+			else begin
+				T1_cnt 	 <= 0;
+				PULSEOUT <= 1;				
+				flag	 <= 2;
+			end
+		end
+		else if (flag == 2) begin
+			if (T2_cnt != T2 - 1) begin
+				T2_cnt <= T2_cnt + 1;
+			end
+			else begin
+				T2_cnt 	 <= 0;
+				PULSEOUT <= 0;
+				flag 	 <= 0;
+			end
+		end
+	end
+endmodule
+	

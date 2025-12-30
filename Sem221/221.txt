@@ -1,0 +1,71 @@
+/******************************************************************************
+ *  @file    main.c
+ *  @author  LvDaengineer
+ *  @brief   STM32F4 - Memory Mapped Peripherals
+ *
+ *  Copyright (c) 2025 LvDaengineer
+ *  All rights reserved.
+ *
+ *  This software is provided "as is", without warranty of any kind.
+ *  Unauthorized copying or distribution is prohibited.
+ *
+ *****************************************************************************/
+ /*****************************    PROBLEM 2    ******************************/
+ 
+ module xuat_xung(clk, PulseOut, mode);
+	input 	clk;
+	input	[1:0] mode;
+	output	PulseOut;
+	reg		PulseOut;
+	reg		[31:0] clk_cnt, T;
+	
+	initial begin
+		PulseOut	= 0;
+		clk_cnt		= 0;
+		T 		 	= 0;
+	end
+	
+	always @(posedge clk) begin
+		case (mode)
+			2'b00: T = 1000 - 1;
+			2'b01: T = 5000 - 1;
+			2'b10: T = 2000 - 1;
+			2'b11: T = 10000000 - 1;
+		endcase
+		
+		if (clk_cnt < T) begin
+			clk_cnt  <= clk_cnt + 1;
+			PulseOut <= 0;
+		end
+		else begin
+			clk_cnt  <= 0;
+			PulseOut <= 1;
+		end
+	end
+ endmodule
+ 
+ /*****************************    PROBLEM 3    ******************************/
+ 
+ a.	
+	RCC_CR		|= ( 1 << 16) | (  1 << 24);
+	RCC_PLLCFGR |= (25 <<  0) | (336 <<  6) | (2 << 16);
+	
+ b.
+	PD[9:8]		UART 		USART3	AF7		DMA1 Stream 1,3 Channel 4
+	PE[6:5]		PWM			TIM9 	AF3
+	PB[6:5]		CAN			CAN2 	AF9
+	
+	RCC_AHB1ENR		|= (1 <<  1) | (1 << 3) | (1 << 4) | (1 << 21);
+	RCC_APB1ENR		|= (1 << 18) | (1 << 26);
+	RCC_APB2ENR		|= (1 << 16);
+	
+	GPIOD_MODER		|= (2 << 16) | (2 << 18);
+	GPIOE_MODER		|= (2 << 10) | (2 << 12);
+	GPIOB_MODER		|= (2 << 10) | (2 << 12);
+	
+	GPIOB_AFRL		|= (9 << 20) | (9 << 24);
+	GPIOD_AFRH		|= (7 <<  0) | (7 <<  4);
+	GPIOE_AFRL		|= (3 << 20) | (3 << 24);
+	
+	DMA_S1CR		|= (4 << 25);
+	DMA_S3CR		|= (4 << 25);

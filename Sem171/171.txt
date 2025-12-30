@@ -34,3 +34,40 @@
 	GPIOB_PUPDR 	|= ((0<<20) | (1<<22)
 					   |(1<<24) | (0<<26) | (0<<28) | (0<<30));
 	GPIOC_PUPDR 	|= 	(0<< 0) | (0<< 2) | (0<< 4) | (0<< 6);
+	
+/******************************    PROBLEM 4    ******************************/
+
+#define SIZE_BUFF	25
+
+void int_to_ascii(uint32_t enc_val, uint8_t *txbuff)
+{
+	for (int i = 4; i >= 0; i--)
+	{
+		txbuff[i] 	= enc_val % 10 + 0x30;
+		enc_val		= enc_val / 10;
+	}
+}
+
+int main()
+{
+	uint32_t	adc_val[4];
+	uint8_t		txbuff[SIZE_BUFF];
+	
+	for (int i = 1; i <= 4; i++)
+	{
+		adc_val[i - 1] = read_adc(i);
+		int_to_ascii(adc_val[i - 1], txbuff + 6*(i-1));
+	}
+	
+	txbuff[ 5] = ' ';
+	txbuff[11] = ' ';
+	txbuff[17] = ' ';
+	txbuff[23] = 0x0D;
+	txbuff[24] = 0x0A;
+	
+	send_data((char *)txbuff, SIZE_BUFF);
+}
+	
+	
+	
+	

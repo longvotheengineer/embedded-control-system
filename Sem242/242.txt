@@ -59,4 +59,28 @@
 		end
 	end
 endmodule
+
+/*****************************    PROBLEM 4    ******************************/
+
+#define SIZE_BUFF	7
+#define CHANNEL1	1
+#define CHANNEL2	2
+
+uint8_t		rxbuff[SIZE_BUFF];
+uint16_t	pwm_val;
+
+int main() {
+	while(1) {	
+		receive_data ((char *)rxbuff, SIZE_BUFF);
+		
+		if (rxbuff[0] == 0xFF &&
+			rxbuff[1] == 0xAA &&
+			rxbuff[2] == 0x04) {			
+				pwm_val    = (rxbuff[3] << 8) + rxbuff[4];
+				write_pwm    (CHANNEL1, pwm_val);
+				pwm_val    = (rxbuff[5] << 8) + rxbuff[6];
+				write_pwm    (CHANNEL2, pwm_val);
+		}
+	}
+}
 	

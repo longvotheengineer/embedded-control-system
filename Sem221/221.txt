@@ -69,3 +69,44 @@
 	
 	DMA_S1CR		|= (4 << 25);
 	DMA_S3CR		|= (4 << 25);
+	
+ /*****************************    PROBLEM 4    ******************************/
+ 
+ #define ADDR_PWM	0x60000040
+ #define SIZE_BUFF	35
+ 
+ volatile uint16_t	*ptr_pwm;
+		  uint16_t	pwm_val;
+		  uint8_t	rxbuff[SIZE_BUFF];
+ 
+ bool check_CRC (uint8_t *rxbuff) {
+	uint8_t crc = 0;
+	for (int i = 0; i < 34; i++) {
+		crc ^= rxbuff[i];
+	}
+	
+	if (rxbuff[ 0] == 0xAA &&
+		rxbuff[ 1] == 0x55 &&
+		rxbuff[34] == crc) {
+		return true;
+	}
+	else 	
+		return false;
+ }
+ 
+ int main() {
+	while(1) {
+		receive_data ((char *)rxbuff, SIZE_BUFF);
+		ptr_pwm = (volatile uint16_t *)ADDR_PWM;
+		
+		if (check_CRC (rxbuff)) {					
+			for (int i = 1; i <= 16; i++) {
+				pwm_val  	= (rxbuff[2*i] << 8) + rxbuff[2*i + 1];
+				*ptr_pwm++ 	= pwm_val;
+			}
+		}
+	}
+ }
+		
+		
+		

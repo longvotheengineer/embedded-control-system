@@ -16,9 +16,10 @@ module doxung(clk, PULSEIN, MODE, D);
 	input 	clk, PULSEIN;
 	input	[ 1:0] MODE;
 	output 	[15:0] D;
-	reg		[15:0] D, clk_cnt;
+	reg		[15:0] D;
+	reg		[15:0] clk_cnt = 0;
 	reg		PULSEIN_pre;
-	reg		[ 1:0] flag_freq = 2'b00;
+	reg		flag_freq = 0;
 	
 	always @(posedge clk) begin
 		PULSEIN_pre <= PULSEIN;		

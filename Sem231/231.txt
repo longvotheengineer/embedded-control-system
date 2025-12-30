@@ -10,6 +10,52 @@
  *  Unauthorized copying or distribution is prohibited.
  *
  *****************************************************************************/
+ /*****************************    PROBLEM 2    ******************************/
+ 
+ module count_enc(clk, ENCA, ENCB, D);
+	input	clk, ENCA, ENCB;
+	output	[15:0] D;
+	reg		[15:0] D;
+	reg		[14:0] clk_cnt;
+	reg		[ 1:0] flag_4cycle;
+	reg		ENCA_pre, dir;
+	
+	initial begin
+		clk_cnt 	= 0;
+		flag_4cycle = 0;
+		ENCA_pre	= 0;
+		dir 		= 0;
+		D			= 0;
+	end
+	
+	always @(posedge clk) begin
+		ENCA_pre <= ENCA;
+				
+		if ({ENCA_pre, ENCA} == 2'b01) begin			
+			if (ENCB == 0) begin
+				dir 		<= 0;
+			end
+			else begin 
+				dir			<= 1;
+			end
+			
+			if (flag_4cycle != 3) begin
+				clk_cnt 	<= clk_cnt + 1;
+				flag_4cycle <= flag_4cycle + 1;				
+			end		
+			else begin
+				D 			<= {dir, clk_cnt};
+				clk_cnt		<= 0;
+				flag_4cycle	<= 0;
+			end
+		end
+		else begin
+			clk_cnt <= clk_cnt + 1;
+		end
+	end
+endmodule
+ 
+ /******************************    PROBLEM 4    ******************************/
 
 #define ADDR_ENC1 	0X60000020
 #define ADDR_ENC2 	0X60000024
